@@ -18,7 +18,8 @@ var defaults = {
     stylesheets: true,
     attributes: true,
     inline: true,
-    properties: [commonProperties.PROPS_FILL, commonProperties.PROPS_STROKE]
+    properties: [commonProperties.PROPS_FILL, commonProperties.PROPS_STROKE],
+    namespaces: []
 };
 
 function writeFile (name, contents, cb) {
@@ -54,6 +55,17 @@ function remove (file, enc, cb) {
     var svgMarkup = opt.stylesheets ? juice(file.contents) : file.contents
     var $ = cheerio.load(svgMarkup);
 
+    _.forEach(opt.namespaces, function (namespace) {
+        $('*').each(function (i, elem) {
+            _.forEach(elem.attribs, function (value, attr) {
+                if (attr.match(new RegExp('^' + namespace + ':'))) {
+                    removeAttribute(attr, $(elem));
+                }
+            });
+        });
+    });
+
+
     var removeProperties = function (element, inline) {
         opt.properties.forEach(function (item) {
             if (inline) {
@@ -83,6 +95,7 @@ function run (options) {
     error(opt.out === null, 'output dir missing');
 
     opt.properties = _.flatten(opt.properties);
+    opt.namespaces = _.flatten(opt.namespaces);
 
     vfs.src(opt.src)
     .pipe(through2.obj(remove));
