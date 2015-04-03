@@ -1,5 +1,7 @@
 # remove-svg-properties
 
+[![npm version](https://badge.fury.io/js/remove-svg-properties.svg)](http://badge.fury.io/js/remove-svg-properties)
+
 > Remove attributes and styles from SVGs
 
 ## Install
