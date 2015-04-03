@@ -9,6 +9,7 @@ var vfs = require('vinyl-fs');
 var mkdirp = require('mkdirp');
 var through2 = require('through2');
 var path = require('path');
+var css = require('css');
 var _ = require('lodash');
 
 var opt;
@@ -19,7 +20,8 @@ var defaults = {
     attributes: true,
     inline: true,
     properties: [],
-    namespaces: []
+    namespaces: [],
+    stylesToInline: false
 };
 
 function noop () {
@@ -55,7 +57,7 @@ function error (condition, message) {
 
 function remove (file, enc, cb) {
 
-    var svgMarkup = opt.stylesheets ? juice(file.contents) : file.contents;
+    var svgMarkup = opt.stylesheets && opt.stylesToInline ? juice(file.contents) : file.contents;
     var $ = cheerio.load(svgMarkup);
 
     _.forEach(opt.namespaces, function (namespace) {
@@ -85,6 +87,22 @@ function remove (file, enc, cb) {
     if (opt.inline) $('[style]').each(function (i, element) {
         removeProperties($(element), true);
     });
+
+    if (!opt.stylesToInline) {
+        var styleDefs = $('style');
+        _.forEach(styleDefs, function (styleDef) {
+
+            styleDef = $(styleDef);
+
+            var parsed = css.parse(styleDef.text());
+            _.forEach(parsed.stylesheet.rules, function (ruleSet) {
+                ruleSet.declarations = _.filter(ruleSet.declarations, function (rule) {
+                    return !_.contains(opt.properties, rule.property);
+                });
+            });
+            styleDef.text('\n' + css.stringify(parsed) + '\n');
+        });
+    };
 
     writeFile(path.join(path.resolve(opt.out), path.basename(file.path)), $.xml(), cb);
     this.push(file);

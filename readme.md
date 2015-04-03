@@ -30,6 +30,7 @@ Values below are `defaults`
 - **inline**: `true` Set to false if you don't want to remove inline style properties
 - **properties**: `[]` Array of properties to be removed. See Properties section below for more information.
 - **namespaces**: `[]` Array of namespace names to be removed.
+- **stylesToInline**: `false` When set to true, &lt;style&gt; contents will be added as inline styles, which avoids stylesheet collisions when adding multiple inline SVGs to an HTML document.
 
 #### Properties
 
