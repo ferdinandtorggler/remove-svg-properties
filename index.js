@@ -18,7 +18,7 @@ var defaults = {
     stylesheets: true,
     attributes: true,
     inline: true,
-    properties: [commonProperties.PROPS_FILL, commonProperties.PROPS_STROKE],
+    properties: [],
     namespaces: []
 };
 
