@@ -16,7 +16,7 @@ npm install remove-svg-properties --save
 
 ```
 var removeSvgProps = require(‘remove-svg-properties’);
-removeSvgProps(options);
+removeSvgProps.remove(options);
 ```
 
 ### Options
@@ -74,7 +74,7 @@ A `<path sketch:type="MSShape"></path>` would be converted to `<path></path>` on
 
 Usage with an exapmle configuration object:
 ```
-removeSvgProps({
+removeSvgProps.remove({
     src: './src/*.svg',
     out: './dest',
     stylesheets: false,
@@ -112,4 +112,4 @@ module.exports = function(grunt) {
 }
 ```
 
-Options to use `remove-svg-properties` with [Gulp](http://gulpjs.com) are the same as for the `removeSvgProps` function with the exception of `src` and `out`, which are not part of the `options` object. Also, `out` is called `dest` in Grunt.
+Options to use `remove-svg-properties` with [Grunt](http://gruntjs.com) are the same as for the `removeSvgProps` function with the exception of `src` and `out`, which are not part of the `options` object. Also, `out` is called `dest` in Grunt.
