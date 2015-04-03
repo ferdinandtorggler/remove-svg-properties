@@ -22,6 +22,9 @@ var defaults = {
     namespaces: []
 };
 
+function noop () {
+}
+
 function writeFile (name, contents, cb) {
     mkdirp(path.dirname(name), function () {
         fs.writeFile(name, contents, cb);
@@ -52,7 +55,7 @@ function error (condition, message) {
 
 function remove (file, enc, cb) {
 
-    var svgMarkup = opt.stylesheets ? juice(file.contents) : file.contents
+    var svgMarkup = opt.stylesheets ? juice(file.contents) : file.contents;
     var $ = cheerio.load(svgMarkup);
 
     _.forEach(opt.namespaces, function (namespace) {
@@ -64,7 +67,6 @@ function remove (file, enc, cb) {
             });
         });
     });
-
 
     var removeProperties = function (element, inline) {
         opt.properties.forEach(function (item) {
@@ -88,8 +90,12 @@ function remove (file, enc, cb) {
     this.push(file);
 }
 
-function run (options) {
+function run (options, done) {
     opt = _.assign(defaults, options);
+
+    if (!done) {
+        done = noop;
+    }
 
     error(opt.src === null, 'source glob missing');
     error(opt.out === null, 'output dir missing');
@@ -98,7 +104,7 @@ function run (options) {
     opt.namespaces = _.flatten(opt.namespaces);
 
     vfs.src(opt.src)
-    .pipe(through2.obj(remove));
+    .pipe(through2.obj(remove, done));
 }
 
 module.exports = _.assign({remove: run}, commonProperties);

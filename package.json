@@ -1,0 +1,40 @@
+{
+  "name": "remove-svg-properties",
+  "version": "0.0.1",
+  "description": "Remove attributes and styles from SVGs",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "graceful-fs": "^3.0.6",
+    "juice": "^1.0.0",
+    "lodash": "^3.5.0",
+    "mkdirp": "^0.5.0",
+    "path": "^0.11.14",
+    "through2": "^0.6.3",
+    "vinyl-fs": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ferdinandtorggler/remove-svg-properties.git"
+  },
+  "keywords": [
+    "svg",
+    "colors",
+    "attributes",
+    "namespace",
+    "gruntplugin"
+  ],
+  "author": "Ferdinand Torggler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ferdinandtorggler/remove-svg-properties/issues"
+  },
+  "homepage": "https://github.com/ferdinandtorggler/remove-svg-properties"
+}
