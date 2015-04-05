@@ -14,7 +14,7 @@ npm install remove-svg-properties --save
 
 ## Usage
 
-```
+```javascript
 var rsp = require(‘remove-svg-properties’);
 rsp.remove(options);
 ```
@@ -73,7 +73,7 @@ A `<path sketch:type="MSShape"></path>` would be converted to `<path></path>` on
 ### Usage Example
 
 Usage with an exapmle configuration object:
-```
+```javascript
 rsp.remove({
     src: './src/*.svg',
     out: './dest',
@@ -89,7 +89,7 @@ This would take all the SVG files from `./src` and put them into `./dest` while 
 
 This module can also be used in automated tasks using Grunt.
 
-```
+```javascript
 module.exports = function(grunt) {
 
     grunt.initConfig({
@@ -118,7 +118,7 @@ Options to use `remove-svg-properties` with [Grunt](http://gruntjs.com) are the 
 
 This module can also be used in automated tasks using Gulp. Make sure to require the `stream` object of the plugin as in the example below:
 
-```
+```javascript
 var gulp = require('gulp');
 var rsp = require('remove-svg-properties').stream;
 
