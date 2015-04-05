@@ -78,7 +78,7 @@ function remove (file, enc, cb) {
                 removeAttribute(item, element);
             }
         });
-    }
+    };
 
     if (opt.attributes) $(attrSelector(opt.properties)).each(function (i, element) {
         removeProperties($(element));
@@ -104,13 +104,29 @@ function remove (file, enc, cb) {
         });
     };
 
-    writeFile(path.join(path.resolve(opt.out), path.basename(file.path)), $.xml(), cb);
+    // In non-streaming mode: Write file to specified output directory (grunt)
+    // In streaming mode: Overwrite file contents and push it furhter (gulp)
+    if (opt.out) {
+        writeFile(path.join(path.resolve(opt.out), path.basename(file.path)), $.xml(), cb);
+    } else { 
+        file.contents = new Buffer($.xml());
+        cb();
+    }
     this.push(file);
 }
 
-function run (options, done) {
-    opt = _.assign(defaults, options);
+// merge with defaults and flatten arrays
+function prepareOptions (options) {
+    var prepared = _.assign(defaults, options);
+    prepared.properties = _.flatten(prepared.properties);
+    prepared.namespaces = _.flatten(prepared.namespaces);
+    return prepared;
+}
 
+function run (options, done) {
+    opt = prepareOptions(options);
+
+    // done function is used in grunt
     if (!done) {
         done = noop;
     }
@@ -118,11 +134,16 @@ function run (options, done) {
     error(opt.src === null, 'source glob missing');
     error(opt.out === null, 'output dir missing');
 
-    opt.properties = _.flatten(opt.properties);
-    opt.namespaces = _.flatten(opt.namespaces);
-
     vfs.src(opt.src)
     .pipe(through2.obj(remove, done));
 }
 
-module.exports = _.assign({remove: run}, commonProperties);
+var stream = {
+    remove: function (options) {
+        opt = prepareOptions(options);
+        return through2.obj(remove);
+    }
+};
+stream = _.assign(stream, commonProperties);
+
+module.exports = _.assign({remove: run, stream: stream}, commonProperties);

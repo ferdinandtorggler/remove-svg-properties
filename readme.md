@@ -113,3 +113,24 @@ module.exports = function(grunt) {
 ```
 
 Options to use `remove-svg-properties` with [Grunt](http://gruntjs.com) are the same as for the `removeSvgProps` function with the exception of `src` and `out`, which are not part of the `options` object. Also, `out` is called `dest` in Grunt.
+## Usage with [Gulp](http://gulpjs.com/)
+
+This module can also be used in automated tasks using Gulp. Make sure to require the `stream` object of the plugin as in the example below:
+
+```
+var gulp = require('gulp');
+var rsp = require('remove-svg-properties').stream;
+
+gulp.task('remove-svg-properties', function () {
+    gulp.src('./src/*.svg')
+    .pipe(rsp.remove({
+        properties: [rsp.PROPS_FILL]
+    }))
+    .pipe(gulp.dest('./dest'));
+});
+
+gulp.task('default', 'remove-svg-properties');
+
+```
+
+Options to use `remove-svg-properties` with [Gulp](http://gulpjs.com/) are the same as for the `rsp.remove` function with `src` and `out` being ignored. They are handled by `gulp.src` and `gulp.dest` using streams.
