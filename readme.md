@@ -15,8 +15,8 @@ npm install remove-svg-properties --save
 ## Usage
 
 ```
-var removeSvgProps = require(‘remove-svg-properties’);
-removeSvgProps.remove(options);
+var rsp = require(‘remove-svg-properties’);
+rsp.remove(options);
 ```
 
 ### Options
@@ -58,7 +58,7 @@ Also, the plugin defines a few common, ready-to-use property-sets:
   - font-variant
   - font-weight
 
-So, an example configuration could be: `[removeSvgProps.PROPS_FILL, 'class']`
+So, an example configuration could be: `[rsp.PROPS_FILL, 'class']`
 This would remove all the properties listed in PROPS_FILL above and all the class attributes.
 
 #### Namespaces
@@ -74,11 +74,11 @@ A `<path sketch:type="MSShape"></path>` would be converted to `<path></path>` on
 
 Usage with an exapmle configuration object:
 ```
-removeSvgProps.remove({
+rsp.remove({
     src: './src/*.svg',
     out: './dest',
     stylesheets: false,
-    properties: [removeColors.PROPS_STROKE, removeColors.PROPS_FILL, 'color'],
+    properties: [rsp.PROPS_STROKE, rsp.PROPS_FILL, 'color'],
     namespaces: ['i', 'sketch', 'inkscape']
 });
 ```
@@ -96,7 +96,7 @@ module.exports = function(grunt) {
         'remove-svg-properties': {
             options: {
                 stylesheets: false,
-                properties: [removeColors.PROPS_STROKE, removeColors.PROPS_FILL, 'color'],
+                properties: [rsp.PROPS_STROKE, rsp.PROPS_FILL, 'color'],
                 namespaces: ['i', 'sketch', 'inkscape']
             },
             all: {
@@ -112,7 +112,8 @@ module.exports = function(grunt) {
 }
 ```
 
-Options to use `remove-svg-properties` with [Grunt](http://gruntjs.com) are the same as for the `removeSvgProps` function with the exception of `src` and `out`, which are not part of the `options` object. Also, `out` is called `dest` in Grunt.
+Options to use `remove-svg-properties` with [Grunt](http://gruntjs.com) are the same as for the `rsp.remove` function with the exception of `src` and `out`, which are not part of the `options` object. Also, `out` is called `dest` in Grunt.
+
 ## Usage with [Gulp](http://gulpjs.com/)
 
 This module can also be used in automated tasks using Gulp. Make sure to require the `stream` object of the plugin as in the example below:
