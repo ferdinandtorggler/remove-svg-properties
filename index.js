@@ -88,7 +88,7 @@ function remove (file, enc, cb) {
         removeProperties($(element), true);
     });
 
-    if (!opt.stylesToInline) {
+    if (opt.stylesheets && !opt.stylesToInline) {
         var styleDefs = $('style');
         _.forEach(styleDefs, function (styleDef) {
 
