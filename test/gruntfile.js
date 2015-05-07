@@ -3,7 +3,9 @@ module.exports = function(grunt) {
     grunt.initConfig({
         'remove-svg-properties': {
             options: {
-                namespaces: ['i', 'sketch']
+                stylesheets: false,
+                namespaces: ['i', 'sketch'],
+                properties: ['fill', 'stroke']
             },
             all: {
                 src: './src/*.svg',

@@ -11,6 +11,7 @@ var through2 = require('through2');
 var path = require('path');
 var css = require('css');
 var _ = require('lodash');
+var colors = require('colors');
 
 var opt;
 var defaults = {
@@ -24,6 +25,17 @@ var defaults = {
     stylesToInline: false
 };
 
+var counters = {
+    stylesheetRules: 0,
+    attributes: 0,
+    inlineRules: 0,
+    reset: function () {
+        this.stylesheetRules = 0;
+        this.attributes = 0;
+        this.inlineRules = 0;
+    }
+};
+
 function noop () {
 }
 
@@ -34,10 +46,12 @@ function writeFile (name, contents, cb) {
 }
 
 function removeInline (cssProperty, element) {
+    if (element.css(cssProperty)) counters.inlineRules += 1; // count
     element.css(cssProperty, '');
 }
 
 function removeAttribute (attribute, element) {
+    if (element.attr(attribute)) counters.attributes += 1; //count
     element.removeAttr(attribute);
 }
 
@@ -96,9 +110,11 @@ function remove (file, enc, cb) {
 
             var parsed = css.parse(styleDef.text());
             _.forEach(parsed.stylesheet.rules, function (ruleSet) {
+                var totalDeclarations = ruleSet.declarations.length;
                 ruleSet.declarations = _.filter(ruleSet.declarations, function (rule) {
                     return !_.contains(opt.properties, rule.property);
                 });
+                counters.stylesheetRules = totalDeclarations - ruleSet.declarations.length;
             });
             styleDef.text('\n' + css.stringify(parsed) + '\n');
         });
@@ -113,6 +129,13 @@ function remove (file, enc, cb) {
         cb();
     }
     this.push(file);
+
+    var inlineCount = (counters.inlineRules + ' inline styles, ')[counters.inlineRules > 0 ? 'yellow': 'reset'];
+    var attrCount = (counters.attributes + ' attributes, ')[counters.attributes > 0 ? 'yellow': 'reset'];
+    var styleCount = (counters.stylesheetRules + ' stylesheet rules ')[counters.stylesheetRules > 0 ? 'yellow': 'reset'];
+    console.log(path.basename(file.path).bold + ': ' +
+            inlineCount + attrCount + styleCount + 'removed.');
+    counters.reset();
 }
 
 // merge with defaults and flatten arrays
