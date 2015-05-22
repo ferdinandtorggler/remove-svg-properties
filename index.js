@@ -13,6 +13,13 @@ var css = require('css');
 var _ = require('lodash');
 var colors = require('colors');
 
+var cheerioOpts = {
+    xmlMode: true,
+    lowerCaseTags: false,
+    lowerCaseAttributeNames: false,
+    recognizeCDATA: true
+};
+
 var opt;
 var defaults = {
     src: null,
@@ -72,7 +79,7 @@ function error (condition, message) {
 function remove (file, enc, cb) {
 
     var svgMarkup = opt.stylesheets && opt.stylesToInline ? juice(file.contents) : file.contents;
-    var $ = cheerio.load(svgMarkup);
+    var $ = cheerio.load(svgMarkup, cheerioOpts);
 
     _.forEach(opt.namespaces, function (namespace) {
         $('*').each(function (i, elem) {
