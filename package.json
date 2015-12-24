@@ -1,6 +1,6 @@
 {
   "name": "remove-svg-properties",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Remove attributes and styles from SVGs",
   "main": "index.js",
   "directories": {
@@ -18,7 +18,9 @@
     "through2": "^0.6.3",
     "vinyl-fs": "^1.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
