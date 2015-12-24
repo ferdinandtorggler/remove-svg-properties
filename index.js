@@ -10,6 +10,7 @@ var mkdirp = require('mkdirp');
 var through2 = require('through2');
 var path = require('path');
 var css = require('css');
+var consume = require('stream-consume');
 var _ = require('lodash');
 var colors = require('colors');
 
@@ -164,8 +165,10 @@ function run (options, done) {
     error(opt.src === null, 'source glob missing');
     error(opt.out === null, 'output dir missing');
 
-    vfs.src(opt.src)
-    .pipe(through2.obj(remove, done));
+
+    var stream = vfs.src(opt.src)
+    .pipe(through2.obj(remove, undefined, done));
+    consume(stream);
 }
 
 var stream = {
