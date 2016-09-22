@@ -30,7 +30,8 @@ var defaults = {
     inline: true,
     properties: [],
     namespaces: [],
-    stylesToInline: false
+    stylesToInline: false,
+    log: true
 };
 
 var counters = {
@@ -132,7 +133,7 @@ function remove (file, enc, cb) {
     // In streaming mode: Overwrite file contents and push it furhter (gulp)
     if (opt.out) {
         writeFile(path.join(path.resolve(opt.out), path.basename(file.path)), $.xml(), cb);
-    } else { 
+    } else {
         file.contents = new Buffer($.xml());
         cb();
     }
@@ -141,8 +142,12 @@ function remove (file, enc, cb) {
     var inlineCount = (counters.inlineRules + ' inline styles, ')[counters.inlineRules > 0 ? 'yellow': 'reset'];
     var attrCount = (counters.attributes + ' attributes, ')[counters.attributes > 0 ? 'yellow': 'reset'];
     var styleCount = (counters.stylesheetRules + ' stylesheet rules ')[counters.stylesheetRules > 0 ? 'yellow': 'reset'];
-    console.log(path.basename(file.path).bold + ': ' +
-            inlineCount + attrCount + styleCount + 'removed.');
+
+    if (opt.log) {
+        console.log(path.basename(file.path).bold + ': ' +
+          inlineCount + attrCount + styleCount + 'removed.');
+    }
+
     counters.reset();
 }
 

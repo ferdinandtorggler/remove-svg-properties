@@ -31,6 +31,7 @@ Values below are `defaults`
 - **properties**: `[]` Array of properties to be removed. See Properties section below for more information.
 - **namespaces**: `[]` Array of namespace names to be removed.
 - **stylesToInline**: `false` When set to true, &lt;style&gt; contents will be added as inline styles, which avoids stylesheet collisions when adding multiple inline SVGs to an HTML document.
+- **log**: `true` When set to false, console logging is disabled.
 
 #### Properties
 
@@ -72,7 +73,7 @@ A `<path sketch:type="MSShape"></path>` would be converted to `<path></path>` on
 
 ### Usage Example
 
-Usage with an exapmle configuration object:
+Usage with an example configuration object:
 ```javascript
 rsp.remove({
     src: './src/*.svg',
