@@ -172,7 +172,7 @@ function run (options, done) {
 
 
     var stream = vfs.src(opt.src)
-    .pipe(through2.obj(remove, undefined, done));
+    .pipe(through2.obj(remove, done));
     consume(stream);
 }
 
